@@ -1,0 +1,19 @@
+version: "3"
+services:
+  postgres:
+    build: .
+    ports:
+      - "8088:5432"
+    container_name: ff-pg
+  pgweb:
+    container_name: ff-web
+    restart: always
+    image: sosedoff/pgweb
+    ports:
+      - "8080:8081"
+    links:
+      - postgres:postgres
+    environment:
+      - DATABASE_URL=postgres://docker:docker@postgres:5432/ff?sslmode=disable
+    depends_on:
+      - postgres
